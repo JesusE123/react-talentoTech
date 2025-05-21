@@ -6,3 +6,5 @@ export type product = {
     image:string
     description:string
 }
+
+export type productSlot = product & { quantity: number };

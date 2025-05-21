@@ -1,15 +1,24 @@
-import type { product } from "../types/product";
+import type {  productSlot } from "../types/product";
+import { useNavigate } from "react-router-dom";
+
 
 
 interface productsProps {
-    product:product
-    addToCart:(cart: product) => void;
+    product:productSlot
+    addToCart:(cart: productSlot) => void;
 }
 
 
 const ProductCard = ({ product,addToCart }:productsProps) => {
+  const navigate = useNavigate()
+  const handleNavigate = () => {
+    navigate(`/product/${product.id}`);
+  };
+
     return (
-      <div className="border rounded-2xl p-4 shadow hover:shadow-lg transition bg-white flex flex-col">
+      <div className="border rounded-2xl p-4 shadow hover:shadow-lg transition bg-white flex flex-col"
+      
+      >
         <img
           src={product.image}
           alt={product.title}
@@ -23,6 +32,11 @@ const ProductCard = ({ product,addToCart }:productsProps) => {
           onClick={() => addToCart(product)}
           >
             Agregar al carrito
+          </button>
+          <button className="mt-2 w-full bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          onClick={handleNavigate}
+          >
+            Ver detalle
           </button>
         </div>
       </div>

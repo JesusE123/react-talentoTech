@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import type { product } from "../types/product";
+import type {  productSlot } from "../types/product";
 import { useCategoryContext } from "../context/CategoriesContext";
 
 const useProducts = () => {
-  const [products, setProducts] = useState<product[]>([]);
+  const [products, setProducts] = useState<productSlot[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { category } = useCategoryContext();
   useEffect(() => {

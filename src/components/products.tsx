@@ -3,17 +3,19 @@ import {  toast } from "react-toastify";
 import ProductCard from "./product-card";
 import { useProductContext } from "../context/ProductsContext";
 import Loading from "./loading";
-import type { product } from "../types/product";
+import type { productSlot } from "../types/product";
+
+
 
 const Products = () => {
   const { products, loading } = useProducts();
   const notify = () => toast("Producto ha sido agregado al carrito !");
-  const { query, setCart, cart } = useProductContext();
+  const { query, addToCart } = useProductContext();
 
-  const addToCart = (product: product) => {
-    setCart([...cart, product]);
-    notify();
-  };
+  const handleToaddCart = (product:productSlot) => {
+    addToCart(product)
+    notify()
+  }
 
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(query.toLowerCase())
@@ -29,7 +31,7 @@ const Products = () => {
           <ProductCard
             key={product.id}
             product={product}
-            addToCart={addToCart}
+            addToCart={handleToaddCart}
           />
         ))}
       </div>

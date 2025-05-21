@@ -1,9 +1,12 @@
-import React from "react";
 import { useProductContext } from "../context/ProductsContext";
 
 const ListCart = () => {
-  const { cart } = useProductContext();
+  const { cart, updateQuantity, removeFromCart } = useProductContext();
+
+  
+
   return (
+    
     <section className="">
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 ">
         <div className="mx-auto max-w-3xl">
@@ -16,7 +19,7 @@ const ListCart = () => {
           <div className="mt-8">
             <ul className="space-y-4">
               {cart.map((product) => (
-                <li className="flex items-center gap-4">
+                <li className="flex items-center gap-4" key={product.id}>
                   <img
                     src={product.image}
                     alt=""
@@ -41,19 +44,27 @@ const ListCart = () => {
                     <form>
                       <label htmlFor="Line1Qty" className="sr-only">
                         {" "}
-                        Quantity{" "}
+                        {product.quantity}
                       </label>
 
                       <input
                         type="number"
-                        min="1"
-                        value="1"
+                        onChange={(e) =>
+                          updateQuantity(
+                            product.id,
+                            parseInt(e.target.value) || 1
+                          )
+                        }
+                        
+                        value={product.quantity}
                         id="Line1Qty"
                         className="h-8 w-12 rounded-sm border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-hidden [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
                       />
                     </form>
 
-                    <button className="text-gray-600 transition hover:text-red-600">
+                    <button className="text-gray-600 transition hover:text-red-600"
+                    onClick={() => removeFromCart(product.id)}
+                    >
                       <span className="sr-only">Remove item</span>
 
                       <svg
@@ -79,24 +90,17 @@ const ListCart = () => {
             <div className="mt-8 flex justify-end border-t-2 border-gray-900 pt-8">
               <div className="w-screen max-w-lg space-y-4">
                 <dl className="space-y-0.5 text-sm text-gray-700">
-                  <div className="flex justify-between">
-                    <dt>Subtotal</dt>
-                    <dd>£250</dd>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <dt>VAT</dt>
-                    <dd>£25</dd>
-                  </div>
-
-                  <div className="flex justify-between">
-                    <dt>Discount</dt>
-                    <dd>-£20</dd>
-                  </div>
-
                   <div className="flex justify-between !text-base font-medium">
                     <dt>Total</dt>
-                    <dd>£200</dd>
+                    <dd>
+                      {cart
+                        .reduce((acc, item) => {
+                          console.log("item:", item);
+                          return acc + item.price * item.quantity;
+                        }, 0)
+                        .toFixed(2)}
+                      $
+                    </dd>
                   </div>
                 </dl>
 
