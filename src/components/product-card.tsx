@@ -1,11 +1,13 @@
 import type { product } from "../types/product";
 
+
 interface productsProps {
     product:product
+    addToCart:(cart: product) => void;
 }
 
 
-const ProductCard = ({ product }:productsProps) => {
+const ProductCard = ({ product,addToCart }:productsProps) => {
     return (
       <div className="border rounded-2xl p-4 shadow hover:shadow-lg transition bg-white flex flex-col">
         <img
@@ -17,7 +19,9 @@ const ProductCard = ({ product }:productsProps) => {
         <p className="text-sm text-gray-500 mb-2 capitalize">{product.category}</p>
         <div className="mt-auto">
           <p className="text-lg font-bold">${product.price}</p>
-          <button className="mt-2 w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+          <button className="mt-2 w-full bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          onClick={() => addToCart(product)}
+          >
             Agregar al carrito
           </button>
         </div>

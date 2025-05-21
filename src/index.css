@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'fira';
+    src: url('./assets/fonts/FiraSans-Regular.ttf') format('truetype');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+    body {
+        font-family: 'fira', sans-serif;
+      }

@@ -1,10 +1,13 @@
 import useCategories from "../hooks/useCategories"
 import SearchProducts from "./search-products";
+import { useCategoryContext } from "../context/CategoriesContext";
+
 
 const Categories = () => {
    const {categories} = useCategories();
+   const {setCategory} = useCategoryContext()
 
-   
+ 
   return (
     <>
      <aside className="w-64 h-min-screen bg-gray-100 border-r p-6">
@@ -14,13 +17,19 @@ const Categories = () => {
           <li key={cat}>
             <button
               className="w-full text-left py-2 px-2 rounded-lg hover:bg-gray-200 transition"
-              onClick={() => console.log(`Categoría seleccionada: ${cat}`)}
+              onClick={() => setCategory(cat)}
             >
              {cat}
             </button>
           </li>
         ))}
       </ul>
+
+      <button className="w-full text-left py-2 px-2 rounded-lg hover:bg-gray-200 transition mt-3"
+      onClick={() => setCategory("")}
+      >
+        todos
+      </button>
 
       <div className="mt-8 mr-3">
         <SearchProducts />
