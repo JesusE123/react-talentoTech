@@ -21,11 +21,11 @@ const ProductCard = ({ product,addToCart }:productsProps) => {
       >
         <img
           src={product.image}
-          alt={product.title}
+          alt={product.name}
           className="w-full h-48 object-contain mb-4"
         />
-        <h3 className="font-semibold text-base mb-2">{product.title}</h3>
-        <p className="text-sm text-gray-500 mb-2 capitalize">{product.category}</p>
+        <h3 className="font-semibold text-base mb-2">{product.name}</h3>
+        <p className="text-sm text-gray-500 mb-2 capitalize">{product.description}</p>
         <div className="mt-auto">
           <p className="text-lg font-bold">${product.price}</p>
           <button className="mt-2 w-full bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"

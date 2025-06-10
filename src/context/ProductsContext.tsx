@@ -9,7 +9,9 @@ interface ProductsContextType {
   setCart: (cart: productSlot[]) => void;
   updateQuantity: (productId:number, newQuantity:number) => void
   addToCart:(product:productSlot) => void;
-  removeFromCart:(id:number) => void
+  removeFromCart:(id:number) => void;
+  products: productSlot[];
+  setProducts: (product:productSlot[]) => void;
 }
 
 // Creamos el contexto con valor inicial null
@@ -19,6 +21,7 @@ const ProductContext = createContext<ProductsContextType | undefined>(undefined)
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const [query, setQuery] = useState("");
   const [cart, setCart] = useState<productSlot[]>([])
+  const [products, setProducts] = useState<productSlot[]>([]);
 
   const updateQuantity = (productId: number, newQuantity: number) => {
     setCart((currentCart) =>
@@ -52,7 +55,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
  
 
   return (
-    <ProductContext.Provider value={{ query, setQuery, setCart, cart, updateQuantity, addToCart,removeFromCart }}>
+    <ProductContext.Provider value={{ query, setQuery, setCart, cart, updateQuantity, addToCart,removeFromCart, products, setProducts }}>
       {children}
     </ProductContext.Provider>
   );

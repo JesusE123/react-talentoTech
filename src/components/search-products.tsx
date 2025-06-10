@@ -10,7 +10,7 @@ const SearchProducts = () => {
           type="text"
           placeholder="Buscar productos"
           onChange={(e) => setQuery(e.target.value)}
-          className="px-2 border rounded w-full border-blue-950"
+          className="px-2 border rounded  border-blue-950"
         />
 
         <CiSearch size={40}/>
