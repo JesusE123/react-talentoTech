@@ -7,6 +7,9 @@ import ProtectedRoute from "./protected-route";
 import Layout from "../components/layout";
 import ProductDetail from "../components/product-detail";
 import { AnimatePresence } from "framer-motion";
+import HomePage from "../components/home-page";
+import AdminPanel from "../components/admin-panel";
+import NewProduct from "../components/new-product";
 const AppRouter = () => {
   const location = useLocation();
 
@@ -15,7 +18,10 @@ const AppRouter = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/login" element={<Login />} />
         <Route element={<Layout />}>
-          <Route path="/*" element={<App />} />
+          <Route path="/*" element={<HomePage />} />
+          <Route path="/products" element={<App />} /> 
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/products/new" element={<NewProduct />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route
             path="/cart"

@@ -1,27 +1,28 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-type Inputs = {
-  email: string;
-  password: string;
-};
+import type { User } from "../types/User";
+
+
 
 const Login = () => {
-  const { register, handleSubmit } = useForm<Inputs>();
-  const navigate = useNavigate();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const { register, handleSubmit } = useForm<User>();
+
+  
+  const onSubmit: SubmitHandler<User> = (data) => {
+
     localStorage.setItem("user", JSON.stringify(data));
-    navigate("/");
+  
   };
 
   return (
     <>
       <div className="flex items-center flex-col justify-center h-screen bg-gray-100">
         <div className="p-4 shadow-lg mb-4 w-72">
-        <p className="text-red-500 text-center">
-          Usuario: En modo de prueba con la finalidad de probar las rutas
-          protegidas, puede ingresar cualquier usuario
-        </p>
+          <p className="text-red-500 text-center">
+            Usuario: En modo de prueba con la finalidad de probar las rutas
+            protegidas, puede ingresar cualquier usuario
+          </p>
         </div>
 
         <form

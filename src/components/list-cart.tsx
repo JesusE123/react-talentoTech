@@ -27,7 +27,7 @@ const ListCart = () => {
                   />
 
                   <div>
-                    <h3 className="text-sm text-gray-900">{product.title}</h3>
+                    <h3 className="text-sm text-gray-900">{product.name}</h3>
 
                     <dl className="mt-0.5 space-y-px text-[14px] text-gray-600">
                       <span>{product.description}</span>
