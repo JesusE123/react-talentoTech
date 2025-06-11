@@ -96,7 +96,7 @@ const ListCart = () => {
                       {cart
                         .reduce((acc, item) => {
                           console.log("item:", item);
-                          return acc + item.price * item.quantity;
+                          return acc + parseInt(item.price) * item.quantity!;
                         }, 0)
                         .toFixed(2)}
                       $

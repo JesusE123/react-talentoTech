@@ -2,27 +2,22 @@ import { useState, useEffect } from "react";
 import type { productSlot } from "../types/product";
 import { useCategoryContext } from "../context/CategoriesContext";
 import { useProductContext } from "../context/ProductsContext";
+import { fetchProducts } from "../api/api";
 
 const useProducts = () => {
-  const {products, setProducts} = useProductContext()
+  const { products, setProducts } = useProductContext()
   const [loading, setLoading] = useState<boolean>(false);
   const { category } = useCategoryContext();
-  const url = "https://68481b87ec44b9f3493fa61e.mockapi.io/tech/v1/Products";
-
-
 
   useEffect(() => {
     let isMounted = true;
 
-    const fetchProducts = async () => {
+    const getProducts = async () => {
       try {
         setLoading(true);
+        const { data, error } = await fetchProducts();
 
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (isMounted) {
+        if (isMounted && data) {
           setProducts(data);
           setLoading(false);
         }
@@ -31,13 +26,11 @@ const useProducts = () => {
         console.error("Error al obtener productos:", error);
       }
     };
-
-    fetchProducts();
-
+    getProducts();
     return () => {
       isMounted = false;
     };
-  }, [category]);
+  }, []);
 
   return { products, loading };
 };

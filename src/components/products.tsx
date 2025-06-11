@@ -9,7 +9,6 @@ import type { productSlot } from "../types/product";
 
 const Products = () => {
   const { products, loading } = useProducts();
-  console.log(products)
   const notify = () => toast("Producto ha sido agregado al carrito !");
   const { query, addToCart } = useProductContext();
 
