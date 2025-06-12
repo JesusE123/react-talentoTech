@@ -4,6 +4,7 @@ export type product = {
     price:string,
     image:string
     description:string
+    category:string
 }
 
 export type productSlot = product & { quantity?: number };

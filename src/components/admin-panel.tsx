@@ -7,7 +7,8 @@ import { AiOutlineDelete, AiFillEdit } from "react-icons/ai";
 import { deleteProduct, fetchProducts } from '../api/api';
 
 const AdminPanel = () => {
-    const { products, setProducts } = useProductContext()
+    const { products, setProducts, query } = useProductContext()
+    
     const [loading, setLoading] = useState<boolean>(false);
 
     const navigate = useNavigate()
@@ -46,6 +47,10 @@ const AdminPanel = () => {
             isMounted = false; // Cleanup: marca el componente como desmontado
         };
     }, []);
+
+    const filterProducts = products.filter(
+  (product) => product.name?.toLowerCase().includes(query.toLowerCase())
+)
 
 
     const handleDelete = async (id: number) => {
@@ -88,7 +93,7 @@ const AdminPanel = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
+                        {filterProducts.map((product) => (
                             <tr key={product.id} className="hover:bg-gray-50">
                                 <td className="px-4 py-2 border">{product.name}</td>
 

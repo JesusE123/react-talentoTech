@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import type { productSlot } from "../types/product";
 import { useCategoryContext } from "../context/CategoriesContext";
 import { useProductContext } from "../context/ProductsContext";
 import { fetchProducts } from "../api/api";

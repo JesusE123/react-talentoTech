@@ -1,23 +1,24 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { doCreateProduct } from "../api/api";
+import { categories } from "../api/categories";
 
 interface Products {
-    id:number
+    id: number
     name: string,
     price: string,
     description: string,
     category: string
-    image:string
+    image: string
 }
 
 
 const NewProduct = () => {
-    const { register, handleSubmit, formState:{isSubmitting} } = useForm<Products>();
+    const { register, handleSubmit, formState: { isSubmitting } } = useForm<Products>();
     const navigate = useNavigate()
-    
 
-    
+
+
 
 
     const onSubmit: SubmitHandler<Products> = (data) => {
@@ -77,22 +78,33 @@ const NewProduct = () => {
                     </div>
                     <div className="grid md:grid-cols-2 md:gap-6">
                         <div className="relative z-0 w-full mb-5 group">
-                            {/* <input
-                                type="text"
+                            <select
                                 {...register("category")}
-                                className="block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" "
+                                className="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                 required
-                            />
+                            >
+                                <option value="">Selecciona una categoría</option>
+                                {categories.map((cat) => (
+                                    <option key={cat} value={cat}>
+                                        {cat}
+                                    </option>
+                                ))}
+                            </select>
                             <label
                                 htmlFor="floating_first_name"
                                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                             >
                                 Categoria
-                            </label> */}
+                            </label>
                         </div>
 
+
+
                     </div>
+
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Upload file</label>
+                    <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" {...register("image")} />
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG .</p>
 
                     <button
                         type="submit"
