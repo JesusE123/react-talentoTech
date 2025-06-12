@@ -1,10 +1,11 @@
-import useCategories from "../hooks/useCategories"
+
 import SearchProducts from "./search-products";
 import { useCategoryContext } from "../context/CategoriesContext";
+import { categories } from "../api/categories";
 
 
 const Categories = () => {
-   const {categories} = useCategories();
+   
    const {setCategory} = useCategoryContext()
 
  

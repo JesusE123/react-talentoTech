@@ -10,6 +10,7 @@ interface productsProps {
 
 
 const ProductCard = ({ product,addToCart }:productsProps) => {
+  
   const navigate = useNavigate()
   const handleNavigate = () => {
     navigate(`/product/${product.id}`);

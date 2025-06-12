@@ -10,6 +10,7 @@ import { AnimatePresence } from "framer-motion";
 import HomePage from "../components/home-page";
 import AdminPanel from "../components/admin-panel";
 import NewProduct from "../components/new-product";
+import EditFormProduct from "../components/edit-form-product";
 const AppRouter = () => {
   const location = useLocation();
 
@@ -23,6 +24,7 @@ const AppRouter = () => {
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/products/new" element={<NewProduct />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/product/edit/:id" element={<EditFormProduct />} />
           <Route
             path="/cart"
             element={

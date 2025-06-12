@@ -1,6 +1,6 @@
 
 import { createContext,useContext,useState } from "react";
-import type {  productSlot } from "../types/product";
+import type { productSlot } from "../types/product";
 
 interface ProductsContextType {
   query:string;
@@ -40,7 +40,7 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
       if (existingItem) {
         return prevCart.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity? + 1 : 1 }
             : item
         );
       } else {
