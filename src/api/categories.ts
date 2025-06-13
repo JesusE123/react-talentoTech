@@ -1,1 +1,0 @@
-export const categories = ["Televisions", "Computers", "Perifericos", "Audio"];

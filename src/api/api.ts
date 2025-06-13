@@ -1,31 +1,30 @@
 // apiService.js
-import axios from "axios"
 import type { ApiResponse, product, productSlot } from "../types/product";
-const API_BASE_URL = 'https://68481b87ec44b9f3493fa61e.mockapi.io/tech/v1';
+import supabase from "../utils/supabase";
 
 export const fetchProducts = async (): Promise<ApiResponse<productSlot[]>> => {
   try {
-    const res = await fetch(`${API_BASE_URL}/Products`);
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
+    const { data, error } = await supabase.from("products").select("*");
+
+    if (error) {
+      return { data: null, error: new Error(error.message) };
     }
-    const data = await res.json();
-    return { data, error: null }; // Retorna los datos y un error nulo
-  } catch (error) {
-    console.error("Error al obtener productos:", error);
-    return { data: null, error: error instanceof Error ? error : new Error(String(error)) }; // Retorna los datos nulos y el error
+
+    return { data, error: null };
+  } catch (err: any) {
+    return { data: null, error: new Error(err.message || "Unexpected error") };
   }
 };
 
 export const deleteProduct = async (id: number) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/Products/${id}`, {
-      method: 'DELETE',
-    });
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`);
-    }
-    const data = await res.json(); // La respuesta DELETE puede tener datos o ser vacía
+    const { data, error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
     return { success: true, data, error: null };
   } catch (error) {
     console.error("Error al eliminar producto:", error);
@@ -33,36 +32,83 @@ export const deleteProduct = async (id: number) => {
   }
 };
 
-export const doCreateProduct = (data: productSlot) => {
-  if (data) {
-    axios.post(`${API_BASE_URL}/Products`, data).
-      then(res => console.log(res.data)).
-      catch(err => console.log(err))
-  }
-}
-
-export const doEditProduct = async (id: number, updatedProductData: product): Promise<ApiResponse<product>> => {
+export const doCreateProduct = async (formData: FormData) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/Products/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedProductData),
-    });
+    // Primero, extraemos los campos (menos la imagen)
+    const title = formData.get("title") as string;
+    const price = formData.get("price") as string;
+    const description = formData.get("description") as string;
+    const category = formData.get("category") as string;
 
-    if (!res.ok) {
+    
+    const { data: insertedData, error: insertError } = await supabase
+      .from("products")
+      .insert([
+        { title, price, description, category, image: "" }
+      ])
+      .select()
+      .single();  
 
-      const errorText = await res.text();
-      throw new Error(`HTTP error! Status: ${res.status}, Message: ${errorText || 'Unknown error'}`);
+    if (insertError) throw insertError;
+
+    let imageUrl = "";
+
+   
+    if (formData.get("image") instanceof File) {
+      const file = formData.get("image") as File;
+      const filePath = `products/${Date.now()}-${file.name}`;
+
+      const { data: imageData, error: imageError } = await supabase.storage
+        .from("product-images")
+        .upload(filePath, file);
+
+      if (imageError) throw imageError;
+
+     
+      imageUrl = supabase.storage
+        .from("product-images")
+        .getPublicUrl(filePath)
+        .data.publicUrl;
+
+      
+      const { error: updateError } = await supabase
+        .from("products")
+        .update({ image: imageUrl })
+        .eq("id", insertedData.id);
+
+      if (updateError) throw updateError;
     }
 
+    return { success: true, data: { ...insertedData, image: imageUrl }, error: null };
 
-    const responseData: product = await res.json();
-    return { data: responseData, error: null };
+  } catch (error) {
+    console.error("Error creando producto:", error);
+    return { success: false, data: null, error };
+  }
+};
+
+
+export const doEditProduct = async (
+  id: number,
+  updatedProductData: product
+): Promise<ApiResponse<product>> => {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .update(updatedProductData)
+      .eq("id", id)
+      .select()
+      .single(); 
+
+    if (error) throw error;
+
+    return { data, error: null };
   } catch (error) {
     console.error(`Error editing product with ID ${id}:`, error);
-    return { data: null, error: error instanceof Error ? error : new Error(String(error)) };
+    return {
+      data: null,
+      error: error instanceof Error ? error : new Error(String(error)),
+    };
   }
 };
 

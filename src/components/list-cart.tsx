@@ -3,10 +3,10 @@ import { useProductContext } from "../context/ProductsContext";
 const ListCart = () => {
   const { cart, updateQuantity, removeFromCart } = useProductContext();
 
-  
+
 
   return (
-    
+
     <section className="">
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 ">
         <div className="mx-auto max-w-3xl">
@@ -21,13 +21,17 @@ const ListCart = () => {
               {cart.map((product) => (
                 <li className="flex items-center gap-4" key={product.id}>
                   <img
-                    src={product.image}
+                    src={
+                      product.image instanceof FileList
+                        ? URL.createObjectURL(product.image[0])
+                        : product.image
+                    }
                     alt=""
                     className="size-16 rounded-sm object-cover"
                   />
 
                   <div>
-                    <h3 className="text-sm text-gray-900">{product.name}</h3>
+                    <h3 className="text-sm text-gray-900">{product.title}</h3>
 
                     <dl className="mt-0.5 space-y-px text-[14px] text-gray-600">
                       <span>{product.description}</span>
@@ -55,7 +59,7 @@ const ListCart = () => {
                             parseInt(e.target.value) || 1
                           )
                         }
-                        
+
                         value={product.quantity}
                         id="Line1Qty"
                         className="h-8 w-12 rounded-sm border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-hidden [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
@@ -63,7 +67,7 @@ const ListCart = () => {
                     </form>
 
                     <button className="text-gray-600 transition hover:text-red-600"
-                    onClick={() => removeFromCart(product.id)}
+                      onClick={() => removeFromCart(product.id)}
                     >
                       <span className="sr-only">Remove item</span>
 

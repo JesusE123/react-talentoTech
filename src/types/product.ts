@@ -1,8 +1,8 @@
 export type product = {
     id:number,
-    name:string,
+    title:string,
     price:string,
-    image:string
+    image:FileList | string;
     description:string
     category:string
 }
@@ -12,7 +12,7 @@ export type productSlot = product & { quantity?: number };
 // Define the shape of a successful response
 export interface ApiResponseSuccess<T> {
   data: T;
-  error: null;
+  error: string | null;
 }
 
 // Define the shape of an error response
