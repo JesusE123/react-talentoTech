@@ -8,66 +8,44 @@ import { deleteProduct, fetchProducts } from '../api/api';
 
 const AdminPanel = () => {
     const { products, setProducts, query } = useProductContext()
-    
-    const [loading, setLoading] = useState<boolean>(false);
-
+    const [reload, setReload] = useState(false);
     const navigate = useNavigate()
 
-
-    const getProducts = async () => {
-        setLoading(true);
-        try {
-            const response = await fetchProducts();
-
-            if (response.error) {
-                console.log(response.error)
-                setProducts([]);
-            } else {
-                setProducts(response.data);
-            }
-        } catch (err) {
-            // Este catch atraparía errores que no fueron capturados por la función fetchProducts
-            console.error("Error inesperado al obtener productos:", err);
-            console.log(err instanceof Error ? err : new Error(String(err)));
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        let isMounted = true;
-        const initialLoad = async () => {
-            if (isMounted) {
-                await getProducts();
+        const loadProducts = async () => {
+            const res = await fetchProducts();
+            if (res.error) {
+                console.log(res.error)
+            } else if (res.data) {
+                setProducts(res.data);
             }
         };
-        initialLoad();
 
-        return () => {
-            isMounted = false; // Cleanup: marca el componente como desmontado
-        };
-    }, []);
+        loadProducts();
+    }, [reload]);
 
     const filterProducts = products.filter(
-  (product) => product.name?.toLowerCase().includes(query.toLowerCase())
-)
+        (product) => product.title?.toLowerCase().includes(query.toLowerCase())
+    )
 
 
     const handleDelete = async (id: number) => {
         try {
-            const response = await deleteProduct(id); // Call the service function
+            const { success, error } = await deleteProduct(id);
 
-            if (response.error) {
-                throw response.error;
+            if (error || !success) {
+                throw error ?? new Error("No se pudo eliminar el producto.");
             }
 
-            await getProducts()
+             setReload(prev => !prev);
         } catch (err) {
-            console.error('Failed to delete product:', err);
-            alert(`Error deleting product: ${err instanceof Error ? err.message : String(err)}`);
+            console.error("Failed to delete product:", err);
+            alert(
+                `Error al eliminar producto: ${err instanceof Error ? err.message : String(err)
+                }`
+            );
         }
     };
-
 
     return (
         <>
@@ -95,10 +73,10 @@ const AdminPanel = () => {
                     <tbody>
                         {filterProducts.map((product) => (
                             <tr key={product.id} className="hover:bg-gray-50">
-                                <td className="px-4 py-2 border">{product.name}</td>
+                                <td className="px-4 py-2 border">{product.title}</td>
 
                                 <td className="px-4 py-2 border">${product.price}</td>
-                                <td className="px-4 py-2 border">${product.price}</td>
+                                <td className="px-4 py-2 border">{product.category}</td>
                                 <td className="px-4 py-2 border">
 
                                     <button onClick={() => navigate(`/product/edit/${product.id}`)} className="text-blue-600 hover:underline mr-2"><AiFillEdit size={25} /></button>

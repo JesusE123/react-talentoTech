@@ -3,14 +3,15 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { useParams, useNavigate } from 'react-router-dom'
 import type { product } from '../types/product';
 import { doEditProduct } from '../api/api';
+import supabase from '../utils/supabase';
 
 interface Products {
     id: number
-    name: string,
+    title: string,
     price: string,
     description: string,
     category: string
-    image: string
+    image: FileList | string
 }
 
 
@@ -21,8 +22,17 @@ const EditFormProduct = () => {
     const { register, handleSubmit, formState: { isSubmitting }, setValue } = useForm<Products>();
     useEffect(() => {
         const fetchProduct = async () => {
-            const res = await fetch(`https://68481b87ec44b9f3493fa61e.mockapi.io/tech/v1/Products/${id}`);
-            const data = await res.json();
+            const { data, error } = await supabase
+                .from("products")
+                .select("*")
+                .eq("id", id)
+                .single(); // traer solo un producto
+
+            if (error) {
+                console.error("Error fetching product:", error.message);
+                return;
+            }
+
             setProduct(data);
         };
 
@@ -32,7 +42,7 @@ const EditFormProduct = () => {
     useEffect(() => {
         if (product) {
             setValue("id", product.id);
-            setValue("name", product.name);
+            setValue("title", product.title);
             setValue("price", product.price);
             setValue("description", product.description);
             setValue("image", product.image);
@@ -58,7 +68,7 @@ const EditFormProduct = () => {
                             className="block py-2.5 px-0 text-sm w-full bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder=" "
                             required
-                            {...register("name")}
+                            {...register("title")}
                         />
                         <label
                             htmlFor="floating_email"

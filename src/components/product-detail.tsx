@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { product } from "../types/product";
 import { motion } from "framer-motion";
-
+import supabase from "../utils/supabase";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -10,14 +10,23 @@ const ProductDetail = () => {
   const [product, setProduct] = useState<product | null>(null);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const res = await fetch(`https://68481b87ec44b9f3493fa61e.mockapi.io/tech/v1/Products/${id}`);
-      const data = await res.json();
-      setProduct(data);
-    };
+  const fetchProduct = async () => {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", id)
+      .single(); 
 
-    fetchProduct();
-  }, [id]);
+    if (error) {
+      console.error("Error fetching product:", error);
+      return;
+    }
+
+    setProduct(data);
+  };
+
+  fetchProduct();
+}, [id]);
 
   if (!product) return <p className="text-center mt-10">Cargando producto...</p>;
 
@@ -29,9 +38,9 @@ const ProductDetail = () => {
     transition={{ duration: 0.4 }}
     >
       <div className="grid md:grid-cols-2 gap-6">
-        <img src={product.image} alt={product.name} className="w-full h-80 object-contain" />
+        <img src={product.image} alt={product.title} className="w-full h-80 object-contain" />
         <div>
-          <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
+          <h1 className="text-2xl font-bold mb-2">{product.title}</h1>
           <p className="text-gray-500 mb-4 capitalize">{}</p>
           <p className="mb-4">{product.description}</p>
           <p className="text-xl font-semibold text-gray-900 mb-4">${product.price}</p>
