@@ -13,7 +13,6 @@ const Navbar = () => {
   const { cart } = useProductContext();
 
   const navigateTocart = () => {
-    console.log(user)
     if (!user) {
       notify();
       return

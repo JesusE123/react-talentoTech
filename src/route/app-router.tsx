@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import Login from "../components/login";
+
 import App from "../App";
 import ListCart from "../components/list-cart";
 import ProtectedRoute from "./protected-route";
@@ -17,7 +17,6 @@ const AppRouter = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/login" element={<Login />} />
         <Route element={<Layout />}>
           <Route path="/*" element={<HomePage />} />
           <Route path="/products" element={<App />} /> 
