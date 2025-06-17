@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useUser } from "@clerk/clerk-react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
 import Cart from "./cart";
-import { button } from "framer-motion/client";
+
 
 const Navbar = () => {
   const navigate = useNavigate();

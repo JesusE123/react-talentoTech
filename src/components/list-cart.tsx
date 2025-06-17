@@ -1,7 +1,9 @@
 import { useProductContext } from "../context/ProductsContext";
+import { useNavigate } from "react-router-dom";
 
 const ListCart = () => {
   const { cart, updateQuantity, removeFromCart } = useProductContext();
+  const navigate = useNavigate();
 
 
 
@@ -108,13 +110,17 @@ const ListCart = () => {
                   </div>
                 </dl>
 
-                <div className="flex justify-end">
-                  <a
-                    href="#"
-                    className="block rounded-sm bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
+                <div className="flex justify-end space-x-2">
+                  <button className="mt-5 w-72 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                    
                   >
                     Comprar
-                  </a>
+                  </button>
+                  <button className="mt-5 w-72 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                    onClick={() => navigate('/products')}
+                  >
+                    Volver
+                  </button>
                 </div>
               </div>
             </div>
