@@ -19,7 +19,7 @@ const HeroSection = () => {
                         
                     </div>
                     <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                        <img src="/public/hero.png" alt="mockup" />
+                        <img src="/hero.png" alt="mockup" />
                     </div>
                 </div>
             </section>

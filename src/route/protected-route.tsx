@@ -1,11 +1,13 @@
 import { Navigate } from "react-router-dom";
 import { type ReactNode } from "react";
+import { useUser } from "@clerk/clerk-react";
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const user = localStorage.getItem("user");
+
+  const { user } = useUser();
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/products" replace />;
   }
 
   return children;
