@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useCategoryContext } from "../context/CategoriesContext";
+
 import { useProductContext } from "../context/ProductsContext";
 import { fetchProducts } from "../api/api";
 
 const useProducts = () => {
   const { products, setProducts } = useProductContext()
   const [loading, setLoading] = useState<boolean>(false);
-  const { category } = useCategoryContext();
+
 
   useEffect(() => {
     let isMounted = true;
@@ -14,7 +14,7 @@ const useProducts = () => {
     const getProducts = async () => {
       try {
         setLoading(true);
-        const { data, error } = await fetchProducts();
+        const { data } = await fetchProducts();
 
         if (isMounted && data) {
           setProducts(data);

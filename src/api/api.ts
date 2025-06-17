@@ -58,7 +58,7 @@ export const doCreateProduct = async (formData: FormData) => {
       const file = formData.get("image") as File;
       const filePath = `products/${Date.now()}-${file.name}`;
 
-      const { data: imageData, error: imageError } = await supabase.storage
+      const { error: imageError } = await supabase.storage
         .from("product-images")
         .upload(filePath, file);
 
